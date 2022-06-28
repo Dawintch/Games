@@ -9,7 +9,6 @@ BLACK = (0,0,0)
 WHITE = (255,255,255)
 RED = (255,0,0)
 COLOR = (255,100,98)
-BLUE =  (  0,   0, 255)
 
 class Sprite(pygame.sprite.Sprite):
     def __init__(self,color, height, width):
@@ -30,7 +29,7 @@ class Sprite(pygame.sprite.Sprite):
         self.data = 1
     def drawClickedWhite(self):
         pygame.draw.circle(self.image, BLACK, (self.width/2,self.height/2),19,2)
-        pygame.draw.circle(self.image, BLUE, (self.width/2,self.height/2),18,18)
+        pygame.draw.circle(self.image, WHITE, (self.width/2,self.height/2),18,18)
         self.data =2
         
 def drawline(n):
