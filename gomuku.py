@@ -5,31 +5,41 @@ from pygame.locals import(
 )
 #variables
 
+#Colors
 BLACK = (0,0,0)
 WHITE = (255,255,255)
 RED = (255,0,0)
-COLOR = (255,100,98)
+Yello = (208,176,144)
+PLAYER = False
+
+#grid
+WIDTH = 20
+MARGIN = 1
+PADDING = 20
+DOT = 4
+BOARD = (WIDTH + MARGIN) * 14 + MARGIN
+GAME_WIDTH = BOARD + PADDING *2
+GAME_HIGHT = GAME_WIDTH + 100
 
 class Sprite(pygame.sprite.Sprite):
-    def __init__(self,color, height, width):
+    def __init__(self,color, length):
         super().__init__()
-        self.width = width
-        self.height = height
-        self.image = pygame.Surface([width,height])
+        self.length = int(length)
+        self.image = pygame.Surface([length,length])
        
-        self.image.set_colorkey(COLOR)
+        self.image.set_colorkey(WHITE)
 
-        pygame.draw.rect(self.image,color, pygame.Rect(0,0,width,height))
+        pygame.draw.rect(self.image,color, pygame.Rect(0,0,length,length))
 
         self.rect = self.image.get_rect()
         self.data = 0
         #clicked
     def drawClickedBlack(self):
-        pygame.draw.circle(self.image, BLACK, (self.width/2,self.height/2),19,20)
+        pygame.draw.circle(self.image, BLACK, (self.length/2,self.length/2),self.length/2-1,20)
         self.data = 1
     def drawClickedWhite(self):
-        pygame.draw.circle(self.image, BLACK, (self.width/2,self.height/2),19,2)
-        pygame.draw.circle(self.image, WHITE, (self.width/2,self.height/2),18,18)
+        pygame.draw.circle(self.image, BLACK, (self.length/2,self.length/2),19,2)
+        pygame.draw.circle(self.image, WHITE, (self.length/2,self.length/2),18,18)
         self.data =2
         
 def drawline(n):
@@ -67,7 +77,7 @@ group = pygame.sprite.Group()
 
 for i in range(15):
     for j in range(15):
-        block = Sprite(WHITE, 40, 40)
+        block = Sprite(WHITE, 40)
         block.rect.x = i*40
         block.rect.y = j*40
         group.add(block)
