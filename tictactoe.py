@@ -18,10 +18,12 @@ class TicTacToe:
 
         self.running = True
         self._win = False
-
+        
+        
         self.group = pygame.sprite.Group()
         self.clock = pygame.time.Clock()
-
+        self.Player = 1
+        self.last_move = [2,2]
 
     
 
@@ -29,32 +31,32 @@ class TicTacToe:
     def check_event(self,event):
         pos = pygame.mouse.get_pos()
         if event.type == pygame.QUIT:
-            running = False
+            self.running = False
         if event.type == MOUSEBUTTONUP:
-            
-            global Player
-        for block in self.group:
-            if block.rect.collidepoint(pos):
-                r = (pos[0])//200
-                c = (pos[1])//200
-                print(r," ",c)
-                if block.data == 0:
-                    if Player == 1:
-                        block.drawClickedCross()
-                        self.grid[c][r] = 1
-                        Player = 2
-                    else :
-                        block.drawClickedCircle()
-                        Player = 1
-                        self.grid[c][r] = 2
-                            #print(block.data)
-                    print(self.grid)
+            for block in self.group:
+                if block.rect.collidepoint(pos):
+                    r = (pos[0])//200
+                    c = (pos[1])//200
+                    self.last_move = [r,c]
+                    #print(self.last_move)
+                    if block.data == 0:
+                        if self.Player == 1:
+                            block.drawClickedCross()
+                            self.grid[c][r] = 1
+                            self.Player = 2
+                        else :
+                            block.drawClickedCircle()
+                            self.Player = 1
+                            self.grid[c][r] = -1
+                                #print(block.data)
+                        #print(self.grid)
+            self.checkwin()
 
 
     def run_game(self):
         print("running")
+        self.render_board()
         while(self.running):
-            self.render_board()
             for event in pygame.event.get():
                 self.check_event(event)
             self.update_board()
@@ -92,26 +94,34 @@ class TicTacToe:
     def endGame(self):
         pygame.quit()
 
-    def checkwin(self,lst):
-        print("working?")
-    
-        for i in lst:
-            if 0 not in i and sum(i) ==3:
-                print("Cross Wins")
-                self.playing == False
-            if 0 not in i and sum(i) == 6:
-                print("Circle Wins")
-                self.playing == False
-    #check column
-        for i in range(3):
-            for j in lst[i]:
-                if(i<1):
-                    if j == lst[i+1][j]==lst[i+2][j] and j ==1:
-                        print("cross win")
-                    if j == lst[i+1][j]==lst[i+2][j] and j ==2:
-                        print("Circle win")
-        #check diagonal
+    def checkwin(self):
+        r = self.last_move[1]
+        c = self.last_move[0]
         
+        #checkrow
+        if sum(self.grid[r]) == 3:
+            print("Cross Win")
+        if sum(self.grid[r]) == -3:
+            print("circle win")
+        #checkColumn
+        vertSum = 0
+        for i in range (3):
+            vertSum += self.grid[i][c]
+        if vertSum == 3:
+            print("Cross WIn")
+        if vertSum == -3:
+            print("Circle Win")
+        #checkDiagnoal
+        if self.grid[0][0]+self.grid[1][1]+self.grid[2][2] == 3:
+            print("Cross win")
+        if self.grid[0][0]+self.grid[1][1]+self.grid[2][2] == -3:     
+            print("Circle Win")
+        if self.grid[0][2]+self.grid[1][1]+self.grid[2][0] == 3:   
+             print("Cross win")
+        if self.grid[0][2]+self.grid[1][1]+self.grid[2][0] == -3:   
+             print("Circle win")
+
+
 
 #custmized sprite class
 class Sprite(pygame.sprite.Sprite):
